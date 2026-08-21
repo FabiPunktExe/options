@@ -53,3 +53,23 @@ Options:
   -n <text>, --name <text>           The name of the server
   -d, --debug                        Enable debug mode
 ```
+
+
+## TOML configuration
+
+The `options-toml` module loads option values from a TOML document.
+
+```kotlin
+val options = Options()
+
+// ...
+
+// Read from toml string
+options.readOptionsFromToml("""
+    port = 9090
+    name = "SpinningFish"
+    debug = true
+    """.trimIndent())
+
+// ...
+```

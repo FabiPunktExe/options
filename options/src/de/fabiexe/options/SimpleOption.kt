@@ -11,7 +11,11 @@ class SimpleOption(
     internal var present = false
 
     override fun read(str: String) {
-        present = true
+        present = when (str) {
+            "", "true" -> true
+            "false" -> false
+            else -> throw IllegalArgumentException("Invalid boolean value: $str")
+        }
     }
 
     override fun validate() {}

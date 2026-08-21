@@ -8,13 +8,17 @@ repositories:
     resolve: false
     publish: true
     credentials:
-      file: local.properties
+      file: //local.properties
       usernameKey: diruptio_repo_username
       passwordKey: diruptio_repo_password
+
+dependencies:
+  - //options
+  - $libs.ktoml.core
 
 settings:
   publishing:
     enabled: true
     group: de.fabiexe
-    artifactId: options
-    version: 1.0.0
+    artifactId: options-toml
+    version: 1.1.0

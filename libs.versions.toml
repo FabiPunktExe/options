@@ -1,0 +1,5 @@
+[versions]
+ktoml = "0.7.1"
+
+[libraries]
+ktoml-core = { module = "com.akuleshov7:ktoml-core", version.ref = "ktoml" }

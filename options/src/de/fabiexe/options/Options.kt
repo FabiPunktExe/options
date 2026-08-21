@@ -38,22 +38,34 @@ class Options {
         ))
     }
 
+    @InternalOptionsApi
+    fun readOption(option: Option<*>, value: String) {
+        try {
+            option.read(value)
+        } catch (e: Exception) {
+            recordError(option, e)
+        }
+    }
+
+    @InternalOptionsApi
+    fun recordError(option: Option<*>, e: Exception) {
+        if (option !in optionsWithErrors) {
+            optionsWithErrors += option
+            validationsErrors += e
+        }
+    }
+
+    @OptIn(InternalOptionsApi::class)
     fun readOptionsFromEnv(prefix: String) {
         for (option in options) {
             val value = getEnv("${prefix}_${option.longName}".uppercase().replace('-', '_'))
             if (value != null) {
-                try {
-                    option.read(value)
-                } catch (e: Exception) {
-                    if (option !in optionsWithErrors) {
-                        optionsWithErrors += option
-                        validationsErrors += e
-                    }
-                }
+                readOption(option, value)
             }
         }
     }
 
+    @OptIn(InternalOptionsApi::class)
     fun readOptionsFromArgs(args: Array<String>) {
         var i = 0
         var option: Option<*>? = null
@@ -71,20 +83,14 @@ class Options {
                     try {
                         option.read(arg)
                     } catch (e: Exception) {
-                        if (option !in optionsWithErrors) {
-                            optionsWithErrors += option
-                            validationsErrors += e
-                        }
+                        recordError(option, e)
                     }
                     option = null
                 } else {
                     try {
                         option.read("")
                     } catch (e: Exception) {
-                        if (option !in optionsWithErrors) {
-                            optionsWithErrors += option
-                            validationsErrors += e
-                        }
+                        recordError(option, e)
                     }
                     option = readOption
                 }
@@ -95,23 +101,18 @@ class Options {
             try {
                 option.read("")
             } catch (e: Exception) {
-                if (option !in optionsWithErrors) {
-                    optionsWithErrors += option
-                    validationsErrors += e
-                }
+                recordError(option, e)
             }
         }
     }
 
+    @OptIn(InternalOptionsApi::class)
     fun validate(): Boolean {
         for (option in options) {
             try {
                 option.validate()
             } catch (e: Exception) {
-                if (option !in optionsWithErrors) {
-                    optionsWithErrors += option
-                    validationsErrors += e
-                }
+                recordError(option, e)
             }
         }
         return validationsErrors.isEmpty()
