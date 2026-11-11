@@ -118,7 +118,7 @@ class Options {
         return validationsErrors.isEmpty()
     }
 
-    fun printHelp() {
+    fun printHelp(showMissingOptions: Boolean = true) {
         println("\u001B[33mOptions:\u001B[0m")
 
         val lines = options.map { option ->
@@ -135,6 +135,13 @@ class Options {
             }
             val padding = " ".repeat(max(3, maxLineLength - lineLength + 3))
             println("  \u001B[94m--${option.longName}$argumentType\u001B[0m, \u001B[94m-${option.shortName}$argumentType\u001B[0m$padding${option.description}\u001B[0m")
+        }
+
+        if (showMissingOptions && optionsWithErrors.isNotEmpty()) {
+            println("\n\u001B[31mMissing / invalid options:\u001B[0m")
+            for (option in optionsWithErrors) {
+                println("  \u001B[94m--${option.longName}\u001B[0m")
+            }
         }
     }
 }

@@ -17,4 +17,4 @@ settings:
     enabled: true
     group: de.fabiexe
     artifactId: options
-    version: 1.1.0
+    version: 1.1.1

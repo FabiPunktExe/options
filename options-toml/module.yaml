@@ -13,7 +13,7 @@ repositories:
       passwordKey: diruptio_repo_password
 
 dependencies:
-  - //options
+  - //options: exported
   - $libs.ktoml.core
 
 settings:
@@ -21,4 +21,4 @@ settings:
     enabled: true
     group: de.fabiexe
     artifactId: options-toml
-    version: 1.1.0
+    version: 1.1.1
